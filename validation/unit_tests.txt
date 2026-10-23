@@ -1,0 +1,72 @@
+test_bad_settings_rejected (test_ml.ConfigAndSQLTests.test_bad_settings_rejected) ... ok
+test_cli_does_not_log_raw_exception_secrets (test_ml.ConfigAndSQLTests.test_cli_does_not_log_raw_exception_secrets) ... ok
+test_explicit_timezone_required (test_ml.ConfigAndSQLTests.test_explicit_timezone_required) ... ok
+test_repository_emits_conflict_safe_insert_in_transaction (test_ml.ConfigAndSQLTests.test_repository_emits_conflict_safe_insert_in_transaction) ... ok
+test_bad_identifiers_and_optional_values (test_ml.FeatureTests.test_bad_identifiers_and_optional_values) ... ok
+test_circular_heading_and_input_immutability (test_ml.FeatureTests.test_circular_heading_and_input_immutability) ... ok
+test_empty_batch_shape (test_ml.FeatureTests.test_empty_batch_shape) ... ok
+test_no_clipping_of_dq_flagged_speed (test_ml.FeatureTests.test_no_clipping_of_dq_flagged_speed) ... ok
+test_nulls_fallback_and_infinities (test_ml.FeatureTests.test_nulls_fallback_and_infinities) ... ok
+test_all_missing_optional_training_columns_are_kept (test_ml.ModelTests.test_all_missing_optional_training_columns_are_kept) ... ok
+test_budget_is_bounded_and_reports_remaining_work (test_ml.ModelTests.test_budget_is_bounded_and_reports_remaining_work) ... 2026-10-16 23:18:21,132 INFO airspace.ml Scoring batch=1 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,132 WARNING airspace.ml Batch budget reached; unscored rows may remain. Rerun or raise ML_MAX_BATCHES. Rows outside the lookback require an explicit wider backfill.
+2026-10-16 23:18:21,132 INFO airspace.ml Scoring complete: {'model_version': 'iforest-20261016T201821-902dbaa69bc2', 'selected': 41, 'scored': 41, 'inserted': 41, 'conflicts': 0, 'rejected': 0, 'flagged_evaluated': 1, 'batch_budget_reached': True}
+ok
+test_checksum_corruption_is_rejected_before_unpickling (test_ml.ModelTests.test_checksum_corruption_is_rejected_before_unpickling) ... ok
+test_empty_and_constant_training_fail (test_ml.ModelTests.test_empty_and_constant_training_fail) ... ok
+test_failed_activation_and_training_preserve_active (test_ml.ModelTests.test_failed_activation_and_training_preserve_active) ... 2026-10-16 23:18:21,316 INFO airspace.ml Training extraction: selected=0 usable=0 rejected=0
+ok
+test_feature_schema_mismatch_is_rejected (test_ml.ModelTests.test_feature_schema_mismatch_is_rejected) ... ok
+test_missing_model_and_path_traversal_fail (test_ml.ModelTests.test_missing_model_and_path_traversal_fail) ... ok
+test_new_model_gets_separate_prediction_keys (test_ml.ModelTests.test_new_model_gets_separate_prediction_keys) ... 2026-10-16 23:18:21,488 INFO airspace.ml Scoring batch=1 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,490 INFO airspace.ml Scoring batch=2 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,493 INFO airspace.ml Scoring batch=3 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,495 INFO airspace.ml Scoring batch=4 selected=37 inserted=37 conflicts=0 rejected=0
+2026-10-16 23:18:21,496 INFO airspace.ml Scoring complete: {'model_version': 'iforest-20261016T201821-c3bcf5103d6e', 'selected': 160, 'scored': 160, 'inserted': 160, 'conflicts': 0, 'rejected': 0, 'flagged_evaluated': 2, 'batch_budget_reached': False}
+2026-10-16 23:18:21,590 INFO airspace.ml Scoring batch=1 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,597 INFO airspace.ml Scoring batch=2 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,604 INFO airspace.ml Scoring batch=3 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,606 INFO airspace.ml Scoring batch=4 selected=37 inserted=37 conflicts=0 rejected=0
+2026-10-16 23:18:21,606 INFO airspace.ml Scoring complete: {'model_version': 'iforest-20261016T201821-243a7920b793', 'selected': 160, 'scored': 160, 'inserted': 160, 'conflicts': 0, 'rejected': 0, 'flagged_evaluated': 2, 'batch_budget_reached': False}
+ok
+test_partial_failure_resumes_after_committed_batch (test_ml.ModelTests.test_partial_failure_resumes_after_committed_batch) ... 2026-10-16 23:18:21,697 INFO airspace.ml Scoring batch=1 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,715 INFO airspace.ml Scoring batch=1 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,720 INFO airspace.ml Scoring batch=2 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,722 INFO airspace.ml Scoring batch=3 selected=37 inserted=37 conflicts=0 rejected=0
+2026-10-16 23:18:21,723 INFO airspace.ml Scoring complete: {'model_version': 'iforest-20261016T201821-44626222381c', 'selected': 119, 'scored': 119, 'inserted': 119, 'conflicts': 0, 'rejected': 0, 'flagged_evaluated': 1, 'batch_budget_reached': False}
+ok
+test_rejected_rows_do_not_starve_later_batches (test_ml.ModelTests.test_rejected_rows_do_not_starve_later_batches) ... 2026-10-16 23:18:21,815 INFO airspace.ml Scoring batch=1 selected=41 inserted=0 conflicts=0 rejected=41
+2026-10-16 23:18:21,819 INFO airspace.ml Scoring batch=2 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,823 INFO airspace.ml Scoring batch=3 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:21,826 INFO airspace.ml Scoring batch=4 selected=37 inserted=37 conflicts=0 rejected=0
+2026-10-16 23:18:21,826 INFO airspace.ml Scoring complete: {'model_version': 'iforest-20261016T201821-736270a725b5', 'selected': 160, 'scored': 119, 'inserted': 119, 'conflicts': 0, 'rejected': 41, 'flagged_evaluated': 1, 'batch_budget_reached': False}
+ok
+test_reproducibility_score_sign_and_artifact_round_trip (test_ml.ModelTests.test_reproducibility_score_sign_and_artifact_round_trip) ... ok
+test_retry_does_not_duplicate_and_late_arrivals_are_found (test_ml.ModelTests.test_retry_does_not_duplicate_and_late_arrivals_are_found) ... 2026-10-16 23:18:22,068 INFO airspace.ml Scoring batch=1 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:22,071 INFO airspace.ml Scoring batch=2 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:22,074 INFO airspace.ml Scoring batch=3 selected=41 inserted=41 conflicts=0 rejected=0
+2026-10-16 23:18:22,077 INFO airspace.ml Scoring batch=4 selected=37 inserted=37 conflicts=0 rejected=0
+2026-10-16 23:18:22,077 INFO airspace.ml Scoring complete: {'model_version': 'iforest-20261016T201822-b039e16e5dd2', 'selected': 160, 'scored': 160, 'inserted': 160, 'conflicts': 0, 'rejected': 0, 'flagged_evaluated': 2, 'batch_budget_reached': False}
+2026-10-16 23:18:22,093 INFO airspace.ml Scoring complete: {'model_version': 'iforest-20261016T201822-b039e16e5dd2', 'selected': 0, 'scored': 0, 'inserted': 0, 'conflicts': 0, 'rejected': 0, 'flagged_evaluated': 0, 'batch_budget_reached': False}
+2026-10-16 23:18:22,109 INFO airspace.ml Scoring batch=1 selected=1 inserted=1 conflicts=0 rejected=0
+2026-10-16 23:18:22,109 INFO airspace.ml Scoring complete: {'model_version': 'iforest-20261016T201822-b039e16e5dd2', 'selected': 1, 'scored': 1, 'inserted': 1, 'conflicts': 0, 'rejected': 0, 'flagged_evaluated': 0, 'batch_budget_reached': False}
+ok
+test_scoring_never_fits_and_empty_scoring_succeeds (test_ml.ModelTests.test_scoring_never_fits_and_empty_scoring_succeeds) ... 2026-10-16 23:18:22,195 INFO airspace.ml Scoring complete: {'model_version': 'iforest-20261016T201822-532213c2fe6a', 'selected': 0, 'scored': 0, 'inserted': 0, 'conflicts': 0, 'rejected': 0, 'flagged_evaluated': 0, 'batch_budget_reached': False}
+ok
+test_version_mismatch_is_rejected (test_ml.ModelTests.test_version_mismatch_is_rejected) ... ok
+test_database_error_stays_on_ml_page (test_ml_integrations.DashboardContractTests.test_database_error_stays_on_ml_page) ... ok
+test_empty_model_list_is_handled (test_ml_integrations.DashboardContractTests.test_empty_model_list_is_handled) ... ok
+test_missing_ml_tables_do_not_raise (test_ml_integrations.DashboardContractTests.test_missing_ml_tables_do_not_raise) ... ok
+test_queries_are_read_only_and_bound (test_ml_integrations.DashboardContractTests.test_queries_are_read_only_and_bound) ... ok
+test_scored_data_renders_through_helpers (test_ml_integrations.DashboardContractTests.test_scored_data_renders_through_helpers) ... ok
+test_zero_predictions_is_handled (test_ml_integrations.DashboardContractTests.test_zero_predictions_is_handled) ... ok
+test_airflow_configuration_contract_via_ast (test_ml_integrations.SchemaAndDAGContracts.test_airflow_configuration_contract_via_ast) ... ok
+test_ml_reads_only_existing_observation_columns (test_ml_integrations.SchemaAndDAGContracts.test_ml_reads_only_existing_observation_columns) ... ok
+test_new_ddl_does_not_mutate_upstream_tables (test_ml_integrations.SchemaAndDAGContracts.test_new_ddl_does_not_mutate_upstream_tables) ... ok
+test_real_airflow_dagbag_when_available (test_ml_integrations.SchemaAndDAGContracts.test_real_airflow_dagbag_when_available) ... skipped 'Airflow not installed; real DagBag parse is not tested'
+test_schema_real_queries_retries_and_constraints (test_ml_postgres.PostgreSQLTests.test_schema_real_queries_retries_and_constraints) ... skipped 'Set ML_TEST_POSTGRES=1 for isolated PostgreSQL integration tests'
+
+----------------------------------------------------------------------
+Ran 34 tests in 1.321s
+
+OK (skipped=2)

@@ -1,0 +1,237 @@
+{
+  "source_archive": "AIRSPACE ARCHIVE.zip",
+  "source_archive_sha256": "7e6c0981f0d9b40608e974f2c4b4d34095b07c442a894418ae4ddbe011433a9b",
+  "project_root": "archive/",
+  "manifest_path": "PHASE11_CHANGES.json",
+  "manifest_note": "This manifest is an added file and does not contain a self-hash.",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "status": "added",
+      "sha256": "ea05cccee064af63ce7f6b24d6e6d6534d664c88e1ae955211d9897b74332736"
+    },
+    {
+      "path": ".env.ml.example",
+      "status": "added",
+      "sha256": "8029bf63f14d6e7e815e6d93ef286f2d98c2b03e9702996b65c8787c2b808290"
+    },
+    {
+      "path": ".gitignore",
+      "status": "modified",
+      "sha256": "f0bd173b58d3767324f3cab0dc3673bd76172a5385caf2fbcaecbae1718a33f9",
+      "original_sha256": "074b8f3c6cf138caa8e2000b55201e2046274da0ed354f77fe16805242a72dd4"
+    },
+    {
+      "path": "Dockerfile.airflow",
+      "status": "modified",
+      "sha256": "6f3138b82dcd675ace64cc376d24b5230f2d660de0683da2fa0a26c69c201761",
+      "original_sha256": "295b21b888d99d1525de446707c3ef3e98a3dfbcd2baef5dc842c437d3a85325"
+    },
+    {
+      "path": "Dockerfile.ml",
+      "status": "added",
+      "sha256": "36264bcdc4abcc4834ee53a5418abfe245440d1c671c622a6ee3943f711f3ff1"
+    },
+    {
+      "path": "PHASE11_VALIDATION.md",
+      "status": "added",
+      "sha256": "599c8c6908a2857c528478f86f3570b1ba423671243db98014205e70b9f43f84"
+    },
+    {
+      "path": "README_PHASE11.md",
+      "status": "added",
+      "sha256": "f1ee7446c72fbbe5e47d7caa4ae13e39caa9042885640249319ccafac92cebd5"
+    },
+    {
+      "path": "docker-compose.yaml",
+      "status": "modified",
+      "sha256": "5a6fb059034201b693387d1601483b2fc5f2755808b9559dac85c1f5e5b1ec38",
+      "original_sha256": "e06d88df92f1b0d73c7f24ca87f137dfc165a3b4350e244ffd1b3411804c1bf1"
+    },
+    {
+      "path": "requirements-ml.txt",
+      "status": "added",
+      "sha256": "62dba33a585448a65ecb02cdad52311c52c2c5e10b20bb0520beefc54c047c07"
+    },
+    {
+      "path": "src/dags/opensky_ml.py",
+      "status": "added",
+      "sha256": "466cffd693c8870550af09c9e2ba4adec41c7b4ebbf8ca50b295bd69462a883a"
+    },
+    {
+      "path": "src/ml/__init__.py",
+      "status": "added",
+      "sha256": "043e33891249b8484a29f86aa970eef6cb823691966bc8327537ff6a8754e1b1"
+    },
+    {
+      "path": "src/ml/__main__.py",
+      "status": "added",
+      "sha256": "2f3015d4697edffa1cb8aedb70d332f87ef4085f9ea785d6c54b99a66537f5f1"
+    },
+    {
+      "path": "src/ml/config.py",
+      "status": "added",
+      "sha256": "2e366e927e3829d83c38dd1a79f5686fd62a2b942c5c2d5f1bb00860dc9f6597"
+    },
+    {
+      "path": "src/ml/db.py",
+      "status": "added",
+      "sha256": "92e464901d956259ae16f170e62de512e2d2864dca6c71225f811e1234013516"
+    },
+    {
+      "path": "src/ml/features.py",
+      "status": "added",
+      "sha256": "7f8f8328aa7ae4243df6988ab41d9a314217c2a7353c8ad22ac3a71c69d34aad"
+    },
+    {
+      "path": "src/ml/model.py",
+      "status": "added",
+      "sha256": "6747a9149ff80b2eb8fd2a11c481f91d288d03efd6bfade0ded005a25afce80a"
+    },
+    {
+      "path": "src/ml/service.py",
+      "status": "added",
+      "sha256": "65c5cbda46196c98cf6bcf0bc2cdb73205b0f8a0b20157cfa1fb6792c1c72092"
+    },
+    {
+      "path": "src/sql/ml_schema.sql",
+      "status": "added",
+      "sha256": "f34c2985e87dbe36884abb1a915400bca2930855c79ed571b00537f5305b68d1"
+    },
+    {
+      "path": "src/sql/ml_verify.sql",
+      "status": "added",
+      "sha256": "19c5a2f050098c01c1d4ba535bf3b13c0eeb7ceb77168926f22b7232c07c7294"
+    },
+    {
+      "path": "streamlit_app/app.py",
+      "status": "modified",
+      "sha256": "ab11afe200a8a59a552085e4a75599f97e347565137d75e564751eafc1d42c04",
+      "original_sha256": "05f0a2651f2eb2b15a4c0e2c0784b8159c936f950becabee0d15e45554e3169d"
+    },
+    {
+      "path": "streamlit_app/ml_anomalies.py",
+      "status": "added",
+      "sha256": "d478a756d321c92c35f38eb435d9d2a7122630c5b6d2d31b2a805d7530e4d603"
+    },
+    {
+      "path": "tests/test_ml.py",
+      "status": "added",
+      "sha256": "50e0b494e9713e9a00093e6190697bf2705b52b38aa6f9041ead55dfcd36040b"
+    },
+    {
+      "path": "tests/test_ml_integrations.py",
+      "status": "added",
+      "sha256": "84646ee24d96592c29c719ab8f67efd46a0152de6fc08e638dba21382ce9f757"
+    },
+    {
+      "path": "tests/test_ml_postgres.py",
+      "status": "added",
+      "sha256": "9be031c5c8c8a1e7b4f416f723dc87938a239f62f54b45ca183221544bc1404b"
+    },
+    {
+      "path": "validation/unit_tests.txt",
+      "status": "added",
+      "sha256": "5ab4edeba879f7a0b7d547ec02a70802d7b12dc43d7a9e073fc7f99081be085e"
+    }
+  ],
+  "unchanged_original_files": [
+    ".streamlit/config.toml",
+    "Dockerfile.dashboard",
+    "Dockerfile.ingestion",
+    "Dockerfile.loader",
+    "Dockerfile.monitor",
+    "Dockerfile.spark",
+    "OpenSky_Airspace_Intelligence_Full_Code_Walkthrough.pdf",
+    "architecture.png",
+    "grafana/README.md",
+    "grafana/dashboards/airspace_pipeline.json",
+    "grafana/provisioning/dashboards/airspace.yaml",
+    "grafana/provisioning/datasources/airspace.yaml",
+    "phase6_check.txt",
+    "requirements-loader.txt",
+    "requirements-spark.txt",
+    "requirements.txt",
+    "src/__init__.py",
+    "src/config.py",
+    "src/dags/opensky_maintenance.py",
+    "src/dags/opensky_pipeline.py",
+    "src/deduplicator.py",
+    "src/kafka_consumer.py",
+    "src/kafka_producer.py",
+    "src/main.py",
+    "src/normalizer.py",
+    "src/opensky_client.py",
+    "src/pipeline_monitor.py",
+    "src/postgres_loader.py",
+    "src/postgres_schema.sql",
+    "src/run_sql.py",
+    "src/spark_streaming.py",
+    "src/sql/analytics.sql",
+    "src/sql/data_quality.sql",
+    "src/sql/dq_history.sql",
+    "src/sql/explain.sql",
+    "src/sql/grafana_role.sql",
+    "src/sql/pipeline_monitor.sql",
+    "src/storage.py",
+    "src/validator.py",
+    "streamlit_app/README.md",
+    "streamlit_app/db.py",
+    "streamlit_app/queries.py",
+    "streamlit_app/render.py",
+    "streamlit_app/requirements.txt"
+  ],
+  "omitted_original_files": [
+    {
+      "path": "docker-compose.yaml.bak",
+      "reason": "obsolete Compose backup with inherited development bootstrap credentials"
+    },
+    {
+      "path": "src/__pycache__/__init__.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/config.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/deduplicator.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/kafka_consumer.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/kafka_producer.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/main.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/normalizer.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/opensky_client.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/pipeline_monitor.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/storage.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    },
+    {
+      "path": "src/__pycache__/validator.cpython-314.pyc",
+      "reason": "generated Python bytecode"
+    }
+  ],
+  "preserved_kafka_log_dirs": "/var/lib/kafka/data",
+  "preserved_spark_checkpoint": "data/checkpoints/aircraft_stream",
+  "runtime_state_included": false
+}

@@ -1,0 +1,47 @@
+# Explicit opt-in: add this file with -f. The original Compose file is unchanged.
+# Both services share the existing project network and PostgreSQL; no new DB volume.
+services:
+  loader-live:
+    profiles: ["live"]
+    build:
+      context: .
+      dockerfile: Dockerfile.loader
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 60s
+    env_file: [.env]
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      SPARK_PROCESSED_PATH: /app/data/spark/aircraft_processed
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data:ro
+    working_dir: /app
+    command: ["python", "-m", "src.refresh_worker", "loader", "--interval", "30"]
+    cpus: "1.0"
+    mem_limit: 768m
+
+  ml-live:
+    profiles: ["live"]
+    build:
+      context: .
+      dockerfile: Dockerfile.ml
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 60s
+    env_file: [.env]
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      ML_MODEL_DIR: /app/artifacts/ml
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - ./src:/app/src:ro
+      - ./artifacts/ml:/app/artifacts/ml:ro
+    working_dir: /app
+    entrypoint: ["python", "-m", "src.refresh_worker"]
+    command: ["ml", "--interval", "60"]
+    cpus: "1.0"
+    mem_limit: 1g

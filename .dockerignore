@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.ml.example
+.git
+.venv
+.venv-ml
+venv
+__pycache__
+**/__pycache__
+*.pyc
+data
+artifacts
+*.zip
+*.bak

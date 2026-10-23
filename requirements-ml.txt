@@ -1,0 +1,9 @@
+# Shared by the standalone ML image and Airflow's isolated ML virtualenv.
+# Keep these identical for training and scoring; metadata enforces compatibility.
+scikit-learn==1.8.0
+numpy==2.3.5
+scipy==1.17.0
+joblib==1.5.3
+threadpoolctl==3.6.0
+psycopg[binary]==3.2.13
+python-dotenv==1.2.2

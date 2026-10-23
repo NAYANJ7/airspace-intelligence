@@ -1,0 +1,294 @@
+services:
+  kafka:
+    image: apache/kafka:3.8.0
+    container_name: kafka
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://kafka:19092,CONTROLLER://kafka:19093,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:19092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:19093
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    # Ingestion and Spark wait for this: a producer that starts before the broker
+    # is ready loses that poll's messages from Kafka.
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka:19092 > /dev/null 2>&1"]
+      interval: 10s
+      timeout: 15s
+      retries: 12
+      start_period: 30s
+
+  ingestion:
+    build:
+      context: .
+      dockerfile: Dockerfile.ingestion
+    container_name: ingestion
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    stop_grace_period: 20s
+
+  # Long-running Spark Structured Streaming service. Same job, same topic, same output path
+  # and the SAME live checkpoint (data/checkpoints/aircraft_stream, relative to /app).
+  # stop_signal SIGINT = the Ctrl+C path of spark_streaming.py: the stream is stopped
+  # cleanly and the next start resumes from the checkpoint.
+  spark:
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
+    container_name: spark
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      PYTHONUNBUFFERED: "1"  # without a terminal Python buffers stdout, so `docker compose logs spark` would lag
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data
+    working_dir: /app
+    command: ["python", "-m", "src.spark_streaming"]
+    stop_signal: SIGINT
+    stop_grace_period: 60s
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  loader:
+    build:
+      context: .
+      dockerfile: Dockerfile.loader
+    container_name: loader
+    profiles: ["tools"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data:ro
+    working_dir: /app
+    command: ["python", "-m", "src.postgres_loader"]
+
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    container_name: airflow
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    env_file:
+      - .env
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/project/src/dags
+      PYTHONPATH: /opt/project
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      PIPELINE_DATA_DIR: /opt/project/data
+      # PostgreSQL for the loader and data-quality tasks. POSTGRES_DB / POSTGRES_USER /
+      # POSTGRES_PASSWORD come from .env (env_file above); nothing is hardcoded here.
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      SPARK_PROCESSED_PATH: /opt/project/data/spark/aircraft_processed
+      # ML has its own virtualenv; the shared model directory is the only writable project mount.
+      ML_MODEL_DIR: /opt/project/artifacts/ml
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/opt/project:ro
+      - airflow_home:/opt/airflow
+      - ./artifacts/ml:/opt/project/artifacts/ml
+    command:
+      - bash
+      - -c
+      - >
+        airflow db migrate &&
+        (if [ -n "$${AIRFLOW_ADMIN_PASSWORD:-}" ]; then airflow users create --username admin --password "$$AIRFLOW_ADMIN_PASSWORD" --firstname Air --lastname Flow --role Admin --email admin@example.com || true; fi) &&
+        echo '==================================================' &&
+        echo 'Airflow UI: http://localhost:8080' &&
+        echo 'Username: admin' &&
+        echo 'Use your existing Airflow account. New accounts require AIRFLOW_ADMIN_PASSWORD in .env.' &&
+        echo '==================================================';
+        airflow scheduler &
+        exec airflow webserver
+
+  # Phase 11: explicit one-shot tools only. No Kafka, Spark, Parquet or checkpoint mount.
+  ml:
+    build:
+      context: .
+      dockerfile: Dockerfile.ml
+    profiles: ["ml"]
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      ML_MODEL_DIR: /app/artifacts/ml
+    volumes:
+      - ./src:/app/src:ro
+      - ./artifacts/ml:/app/artifacts/ml
+    working_dir: /app
+    cpus: "1.0"
+    mem_limit: 1g
+
+  # Phase 9: read-only Streamlit dashboard on top of PostgreSQL. http://localhost:8501
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: dashboard
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+    ports:
+      - "8501:8501"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ---- Phase 10: monitoring (Grafana). Start with:  docker compose --profile monitoring up -d
+  # A profile keeps `docker compose up -d` exactly as before for anyone who has not set the Grafana variables.
+
+  # Samples Kafka offsets, Spark checkpoint lag, Parquet output and Airflow run state into PostgreSQL every
+  # MONITOR_INTERVAL_SECONDS (default 60). Read-only mounts: it cannot change the checkpoint, the data or Airflow.
+  monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.monitor
+    container_name: pipeline-monitor
+    profiles: ["monitoring"]
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      PIPELINE_DATA_DIR: /app/data
+      AIRFLOW_DB_PATH: /airflow_home/airflow.db
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data:ro
+      - airflow_home:/airflow_home:ro
+    working_dir: /app
+    command: ["python", "-m", "src.pipeline_monitor"]
+
+  # One-shot: creates/updates the read-only PostgreSQL role grafana_ro (password = GRAFANA_PG_PASSWORD in .env).
+  grafana-init:
+    image: postgres:16
+    container_name: grafana-init
+    profiles: ["monitoring"]
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGHOST: postgres
+      PGUSER: ${POSTGRES_USER}
+      PGDATABASE: ${POSTGRES_DB}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      GRAFANA_PG_PASSWORD: ${GRAFANA_PG_PASSWORD:-}
+    volumes:
+      - ./src/sql/grafana_role.sql:/init/grafana_role.sql:ro
+    command:
+      - sh
+      - -c
+      - |
+        if [ -z "$$GRAFANA_PG_PASSWORD" ]; then echo "GRAFANA_PG_PASSWORD is not set in .env" >&2; exit 1; fi
+        psql -v ON_ERROR_STOP=1 -v gpw="$$GRAFANA_PG_PASSWORD" -f /init/grafana_role.sql
+
+  # http://localhost:3000 (bound to this computer only). Data source and dashboard are provisioned from ./grafana.
+  grafana:
+    image: grafana/grafana-oss:11.6.0
+    container_name: grafana
+    profiles: ["monitoring"]
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      grafana-init:
+        condition: service_completed_successfully
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/dashboards/airspace_pipeline.json
+      AIRSPACE_PG_DB: ${POSTGRES_DB}
+      GRAFANA_PG_PASSWORD: ${GRAFANA_PG_PASSWORD:-}
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/etc/grafana/dashboards:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  kafka_data:
+  postgres_data:
+  airflow_home:
+  grafana_data:

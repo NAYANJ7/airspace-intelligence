@@ -1,0 +1,188 @@
+{
+  "phase": "12 performance improvement",
+  "source_archive": "Airspace Intelligence(1).zip",
+  "validation": "NOT TESTED: operator requested testing on their own machine",
+  "files": [
+    {
+      "path": ".streamlit/config.toml",
+      "change": "modified",
+      "before_sha256": "cae4c8ac1f8a4aa0e61a96847f75215cc0965d3a3c6eda9189dfe52088ae372b",
+      "after_sha256": "840a1b217370e2019cc712a9e9ff94430ffb3c99b9793e94339bbcda50ce576f"
+    },
+    {
+      "path": "PERFORMANCE_GUIDE.md",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "60f38260939682e14e60c35079042ac518a6217bf55a6e93ec4988ba8734b12c"
+    },
+    {
+      "path": "PHASE12_VALIDATION.md",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "fb4d43918d73183b689f4f6385b6eca07b18351a32bcefe3960ba4b52b013e54"
+    },
+    {
+      "path": "README_PHASE12.md",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "2d9373925db6793be6b8c78e7aa45737bac708b8ffeef3f78c51b26589dc0e97"
+    },
+    {
+      "path": "compose.live.yaml",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "4f13bc3945501fbb50e0f67ca5ff32db2a6ff542f8e02987c48ec6d38cb0e9f4"
+    },
+    {
+      "path": "src/incremental_loader.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "464d633e0de665d7f54a0f7fdf684aec6f5a9d98ba1e9d2f63ed39fbd95fc53f"
+    },
+    {
+      "path": "src/postgres_loader.py",
+      "change": "modified",
+      "before_sha256": "8aa6f0c1ecda3f1a49c63b95a845e9559dda196db41aef61be739588bd8ef50e",
+      "after_sha256": "90857f4a34de462df0eafd96cca0c3c2522b11f6ab8c82d1cc10017b89bcfef2"
+    },
+    {
+      "path": "src/refresh_worker.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "7af1b8d62b3c8affd3829a5374b5e30a8ce7320c1b80cb44936ffe134c660408"
+    },
+    {
+      "path": "src/sql/loader_tracking.sql",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "b7b6a5bf30ad43ff63ff5004b4f3461071310cbeaa8505ac5042cd5a7c93f545"
+    },
+    {
+      "path": "src/sql/performance_verify.sql",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "63a2e662cea37b17dd104b404d5c9705a9707084b81972c36af1a2500fee4181"
+    },
+    {
+      "path": "streamlit_app/README.md",
+      "change": "modified",
+      "before_sha256": "f2b61805e5c6aa9b0f9ed3052af7be02d4bde97111bc464dab0291a2b98addb2",
+      "after_sha256": "b80b5ca123bccd7d64491404fb7eec9e0edc19a9e1d909b90e9f0e5b5da1098b"
+    },
+    {
+      "path": "streamlit_app/app.py",
+      "change": "modified",
+      "before_sha256": "ab11afe200a8a59a552085e4a75599f97e347565137d75e564751eafc1d42c04",
+      "after_sha256": "580eba996a801c69cbd63dd45fe3c5ad23690d76221b8aebae47aa85dae04bf6"
+    },
+    {
+      "path": "streamlit_app/data_helpers.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "4276bd7c2bf7e8f90bf30bdac769399004b3b5452d66e6b5939aec19286ccfbe"
+    },
+    {
+      "path": "streamlit_app/guide.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "f0dba503ee60aaf45a0c8e30fee7bed856eba188dc08900c9c7c1a7e4282b623"
+    },
+    {
+      "path": "streamlit_app/ml_anomalies.py",
+      "change": "modified",
+      "before_sha256": "d478a756d321c92c35f38eb435d9d2a7122630c5b6d2d31b2a805d7530e4d603",
+      "after_sha256": "ecd3f52f8e5933558e4cf8b3ced3649009ee8e85718bc28084b739075439d7ac"
+    },
+    {
+      "path": "streamlit_app/queries.py",
+      "change": "modified",
+      "before_sha256": "b99ede5b9808e1d90e9857442ba7a2deadffc576f07b1e01f20c6ddb2fc51ea7",
+      "after_sha256": "b772be2aa71060f364ac7c80d25943cd2829f53f3ec5b5bdc68a0482987ebd10"
+    },
+    {
+      "path": "streamlit_app/render.py",
+      "change": "modified",
+      "before_sha256": "3a2f698a53f276a2aea86e20dd393b75daa09279ca2bc451ff19e3d067e3dfbe",
+      "after_sha256": "003311416733e81254eb5abc115ebda232705689edc960877993a953a749271f"
+    },
+    {
+      "path": "streamlit_app/styles.css",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "1428b7e328de907212d3b41f24931c036fd3c3183579f04d7852e3549459c120"
+    },
+    {
+      "path": "streamlit_app/ui.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "9bd2fbd2204b329ec56b45733562fb38d5ce2ed22310c0205f0374caf65f865e"
+    },
+    {
+      "path": "streamlit_app/views/__init__.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "63131791537094a7bb7921049d281062f0e8411d3f588655ec7e3bf8f37095d9"
+    },
+    {
+      "path": "streamlit_app/views/airspace.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "bb0c4ae0affd660a8fafb8d9e402bd76aacc614370217cfad5ea13ac67469e79"
+    },
+    {
+      "path": "streamlit_app/views/analytics.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "72b3ef8c8e46769debb136f7700ea6e954359bc2da3b69286fcd6227acfd559c"
+    },
+    {
+      "path": "streamlit_app/views/explorer.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "aced9a7deba56971fc7bbba2eb14dd721f81391ae98d2434584cc96868350a31"
+    },
+    {
+      "path": "streamlit_app/views/quality.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "7932b457713c24b07ccb8643f08c3679ec9ae737d682f676227531ea03d68bc7"
+    },
+    {
+      "path": "tests/dashboard_fixtures.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "aa763862dabd7cdef7d1c735c6199408beb6ad3ae81aee220d735c343d4f1132"
+    },
+    {
+      "path": "tests/test_dashboard.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "894b668f8b77c484cfe99ffd6b715170d7c45aaa54a729ed8fa26f02c0abafa8"
+    },
+    {
+      "path": "tests/test_dashboard_postgres.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "8607feedf9eeab3827c7bae065b0a2413f38014470ce7c0ff10f321595b5b44b"
+    },
+    {
+      "path": "tests/test_ml_integrations.py",
+      "change": "modified",
+      "before_sha256": "84646ee24d96592c29c719ab8f67efd46a0152de6fc08e638dba21382ce9f757",
+      "after_sha256": "36d16faecc9332dbf27e4deaf3fd0e29a9abac94709ca80483c3a1d784854007"
+    },
+    {
+      "path": "tests/test_performance.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "87ea2a82287b72feb126e894a34bcb799c5134f351514f513618c0c4a9382458"
+    },
+    {
+      "path": "tests/test_performance_postgres.py",
+      "change": "added",
+      "before_sha256": null,
+      "after_sha256": "d435e276a78322345d25b7df09dc106c8b188d8352cf70d37d4a103f36703e68"
+    }
+  ],
+  "manifest_note": "This manifest is itself added; no self hash."
+}

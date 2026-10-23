@@ -1,0 +1,49 @@
+﻿                         Table "public.aircraft_observations"
+          Column           |           Type           | Collation | Nullable | Default 
+---------------------------+--------------------------+-----------+----------+---------
+ icao24                    | text                     |           | not null | 
+ callsign                  | text                     |           |          | 
+ origin_country            | text                     |           |          | 
+ observation_time          | timestamp with time zone |           | not null | 
+ ingested_at               | timestamp with time zone |           |          | 
+ longitude                 | double precision         |           |          | 
+ latitude                  | double precision         |           |          | 
+ baro_altitude             | double precision         |           |          | 
+ geo_altitude              | double precision         |           |          | 
+ velocity                  | double precision         |           |          | 
+ true_track                | double precision         |           |          | 
+ vertical_rate             | double precision         |           |          | 
+ on_ground                 | boolean                  |           |          | 
+ squawk                    | text                     |           |          | 
+ spi                       | boolean                  |           |          | 
+ position_source           | smallint                 |           |          | 
+ category                  | smallint                 |           |          | 
+ observation_date          | date                     |           |          | 
+ altitude_km               | double precision         |           |          | 
+ velocity_kmh              | double precision         |           |          | 
+ flight_status             | text                     |           | not null | 
+ observation_hour          | smallint                 |           |          | 
+ ingestion_latency_seconds | double precision         |           |          | 
+Indexes:
+    "aircraft_observations_pkey" PRIMARY KEY, btree (icao24, observation_time)
+    "idx_aircraft_obs_country_time" btree (origin_country, observation_time)
+    "idx_aircraft_obs_time" btree (observation_time)
+Check constraints:
+    "aircraft_observations_flight_status_chk" CHECK (flight_status = ANY (ARRAY['AIRBORNE'::text, 'ON_GROUND'::text]))
+
+ count  | count |          min           |          max           
+--------+-------+------------------------+------------------------
+ 286445 | 24849 | 2026-09-27 13:52:34+00 | 2026-09-29 16:24:30+00
+(1 row)
+
+ icao24 | callsign |    observation_time    | altitude_km | flight_status 
+--------+----------+------------------------+-------------+---------------
+ ac90e9 | N909DC   | 2026-09-29 16:24:30+00 |       2.957 | AIRBORNE
+ ad00be | N937MA   | 2026-09-29 16:24:30+00 |       1.196 | AIRBORNE
+ a54245 | EJA438   | 2026-09-29 16:24:30+00 |      13.091 | AIRBORNE
+ e94c88 | BOV779   | 2026-09-29 16:24:30+00 |      11.346 | AIRBORNE
+ a73ed2 | N566SP   | 2026-09-29 16:24:30+00 |       0.191 | AIRBORNE
+(5 rows)
+
+NAME       IMAGE         COMMAND                  SERVICE    CREATED          STATUS                    PORTS
+postgres   postgres:16   "docker-entrypoint.sΓÇª"   postgres   15 minutes ago   Up 15 minutes (healthy)   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp

@@ -1,0 +1,16 @@
+# Extends the official Airflow image with the one extra package the DAG's
+# check_kafka/check_aircraft_states tasks need (confluent-kafka). Everything
+# else (webserver, scheduler, metadata DB) comes from the base image as-is.
+FROM apache/airflow:2.10.4-python3.12
+
+USER airflow
+RUN pip install --no-cache-dir confluent-kafka>=2.6.0 requests>=2.31.0 python-dotenv>=1.0.0 pandas>=2.2.0 pyarrow>=14.0.0
+# Phase 8: PostgreSQL driver (psycopg 3) needed by the existing loader and the data-quality tasks.
+RUN pip install --no-cache-dir "psycopg[binary]>=3.2.0"
+
+# Phase 11 dependencies never upgrade Airflow's own Python environment.
+USER root
+RUN python -m venv /opt/airspace-ml && chown -R airflow:0 /opt/airspace-ml
+COPY --chown=airflow:0 requirements-ml.txt /tmp/requirements-ml.txt
+USER airflow
+RUN PIP_USER=false /opt/airspace-ml/bin/python -m pip install --no-cache-dir -r /tmp/requirements-ml.txt

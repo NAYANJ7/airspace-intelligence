@@ -1,0 +1,17 @@
+# Dark theme for the dashboard (streamlit run streamlit_app/app.py, run from the project root).
+[theme]
+base = "dark"
+primaryColor = "#50d6df"
+backgroundColor = "#09111f"
+secondaryBackgroundColor = "#112138"
+textColor = "#e4edf8"
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "viewer"

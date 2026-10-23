@@ -1,0 +1,26 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Spark: checkpoints and generated output are runtime state, not source
+data/spark/
+data/checkpoints/
+
+# Phase 11: runtime models and local ML environment; never commit serialized data.
+artifacts/ml/
+.venv-ml/
+.env.*
+!.env.ml.example

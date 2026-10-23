@@ -1,0 +1,21 @@
+# Built from python:3.12-slim + OpenJDK 21 + PySpark 3.5.3. Debian's
+# python:3.12-slim base moved from bookworm to trixie, which dropped
+# openjdk-17 from its repos (confirmed via the actual apt error) - openjdk-21
+# is what's actually available now, and PySpark 3.5.3 was verified to work
+# with it during development.
+FROM python:3.12-slim
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends openjdk-21-jdk-headless && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+
+WORKDIR /app
+
+COPY requirements-spark.txt .
+RUN pip install --no-cache-dir -r requirements-spark.txt
+
+COPY src ./src
+
+CMD ["tail", "-f", "/dev/null"]

@@ -1,0 +1,4 @@
+# Phase 10: small image for src/pipeline_monitor.py (the source is mounted by docker-compose, not copied).
+FROM python:3.12-slim
+RUN pip install --no-cache-dir "confluent-kafka>=2.6.0" "psycopg[binary]>=3.2.0"
+WORKDIR /app
